@@ -9,6 +9,14 @@
 // ==/UserScript==
 (() => {
   var __getOwnPropNames = Object.getOwnPropertyNames;
+  var __esm = (fn, res, err) => function __init() {
+    if (err) throw err[0];
+    try {
+      return fn && (res = (0, fn[__getOwnPropNames(fn)[0]])(fn = 0)), res;
+    } catch (e) {
+      throw err = [e], e;
+    }
+  };
   var __commonJS = (cb, mod) => function __require() {
     try {
       return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
@@ -17,9 +25,69 @@
     }
   };
 
+  // src/constants.js
+  var SELECTORS, UI_IDS, FOLDER_FILTER_ALL, FOLDER_FILTER_UNFILED, STORAGE_KEY, PANEL_LAYOUT_STORAGE_KEY, DEFAULT_PANEL_SECTION_ORDER, FOLDERS_STORAGE_KEY;
+  var init_constants = __esm({
+    "src/constants.js"() {
+      SELECTORS = {
+        listing: '[data-testid="grid-item"]',
+        itemLink: 'a[href*="/items/"]',
+        price: '[data-testid$="--price-text"]',
+        brand: '[data-testid$="--description-title"]'
+      };
+      UI_IDS = {
+        viewVinted: "vinted-view-vinted",
+        viewOrganizer: "vinted-view-organizer",
+        viewDashboard: "vinted-view-dashboard",
+        dashboardView: "vinted-dashboard-view",
+        organizerView: "vinted-organizer-view",
+        organizerGrid: "vinted-organizer-grid",
+        organizerViewCount: "vinted-organizer-view-count",
+        panel: "vinted-organizer",
+        sort: "vinted-sort",
+        loadAll: "vinted-load-all",
+        loadStatus: "vinted-load-status",
+        nameFilter: "vinted-name-filter",
+        priceMin: "vinted-price-min",
+        priceMax: "vinted-price-max",
+        brandFilter: "vinted-brand-filter",
+        typeFilter: "vinted-type-filter",
+        statusFilter: "vinted-status-filter",
+        resultCount: "vinted-result-count",
+        applyFilters: "vinted-apply-filters",
+        clearFilters: "vinted-clear-filters",
+        priceHistory: "vinted-price-history",
+        priceHistorySummary: "vinted-price-history-summary",
+        removeSold: "vinted-remove-sold",
+        removeSoldStatus: "vinted-remove-sold-status",
+        soldHistoryButton: "vinted-sold-history-button",
+        soldHistoryView: "vinted-sold-history-view",
+        soldHistoryGrid: "vinted-sold-history-grid",
+        soldHistoryCount: "vinted-sold-history-count",
+        soldHistoryClose: "vinted-sold-history-close",
+        folderList: "vinted-folder-list",
+        folderNameInput: "vinted-folder-name-input",
+        folderCreateButton: "vinted-folder-create-button"
+      };
+      FOLDER_FILTER_ALL = "all";
+      FOLDER_FILTER_UNFILED = "unfiled";
+      STORAGE_KEY = "vintedFavoritesOrganizer_listingCache_v1";
+      PANEL_LAYOUT_STORAGE_KEY = "vintedFavoritesOrganizer_panelLayout_v1";
+      DEFAULT_PANEL_SECTION_ORDER = [
+        "update",
+        "organize",
+        "folders",
+        "filters",
+        "activity"
+      ];
+      FOLDERS_STORAGE_KEY = "vintedFavoritesOrganizer_folders_v1";
+    }
+  });
+
   // src/main.js
   var require_main = __commonJS({
     "src/main.js"() {
+      init_constants();
       (function() {
         "use strict";
         let vintedCsrfToken = null;
@@ -75,63 +143,11 @@
             vintedCsrfToken
           );
         };
-        const SELECTORS = {
-          listing: '[data-testid="grid-item"]',
-          itemLink: 'a[href*="/items/"]',
-          price: '[data-testid$="--price-text"]',
-          brand: '[data-testid$="--description-title"]'
-        };
-        const UI_IDS = {
-          viewVinted: "vinted-view-vinted",
-          viewOrganizer: "vinted-view-organizer",
-          viewDashboard: "vinted-view-dashboard",
-          dashboardView: "vinted-dashboard-view",
-          organizerView: "vinted-organizer-view",
-          organizerGrid: "vinted-organizer-grid",
-          organizerViewCount: "vinted-organizer-view-count",
-          panel: "vinted-organizer",
-          sort: "vinted-sort",
-          loadAll: "vinted-load-all",
-          loadStatus: "vinted-load-status",
-          nameFilter: "vinted-name-filter",
-          priceMin: "vinted-price-min",
-          priceMax: "vinted-price-max",
-          brandFilter: "vinted-brand-filter",
-          typeFilter: "vinted-type-filter",
-          statusFilter: "vinted-status-filter",
-          resultCount: "vinted-result-count",
-          applyFilters: "vinted-apply-filters",
-          clearFilters: "vinted-clear-filters",
-          priceHistory: "vinted-price-history",
-          priceHistorySummary: "vinted-price-history-summary",
-          removeSold: "vinted-remove-sold",
-          removeSoldStatus: "vinted-remove-sold-status",
-          soldHistoryButton: "vinted-sold-history-button",
-          soldHistoryView: "vinted-sold-history-view",
-          soldHistoryGrid: "vinted-sold-history-grid",
-          soldHistoryCount: "vinted-sold-history-count",
-          soldHistoryClose: "vinted-sold-history-close",
-          folderList: "vinted-folder-list",
-          folderNameInput: "vinted-folder-name-input",
-          folderCreateButton: "vinted-folder-create-button"
-        };
         let currentView = "vinted";
         let currentFolderFilter = "all";
         let activeFolderMenu = null;
         let activeFolderMenuCleanup = null;
-        const FOLDER_FILTER_ALL = "all";
-        const FOLDER_FILTER_UNFILED = "unfiled";
         const listingCache = /* @__PURE__ */ new Map();
-        const STORAGE_KEY = "vintedFavoritesOrganizer_listingCache_v1";
-        const PANEL_LAYOUT_STORAGE_KEY = "vintedFavoritesOrganizer_panelLayout_v1";
-        const DEFAULT_PANEL_SECTION_ORDER = [
-          "update",
-          "organize",
-          "folders",
-          "filters",
-          "activity"
-        ];
-        const FOLDERS_STORAGE_KEY = "vintedFavoritesOrganizer_folders_v1";
         const organizerFolders = /* @__PURE__ */ new Map();
         const folderAssignments = /* @__PURE__ */ new Map();
         function normalizeFolderName(name) {

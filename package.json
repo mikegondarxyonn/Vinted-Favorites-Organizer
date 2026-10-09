@@ -1,0 +1,25 @@
+{
+  "name": "vinted-favorites-organizer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  "build": "node scripts/build.mjs"
+}
+  ,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikegondarxyonn/vinted-favorites-organizer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mikegondarxyonn/vinted-favorites-organizer/issues"
+  },
+  "homepage": "https://github.com/mikegondarxyonn/vinted-favorites-organizer#readme",
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}

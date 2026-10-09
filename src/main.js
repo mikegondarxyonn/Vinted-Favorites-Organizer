@@ -1,13 +1,3 @@
-// ==UserScript==
-// @name         Vinted Favorites Organizer
-// @namespace    http://tampermonkey.net/
-// @version      1.1
-// @description  Organizador de favoritos do Vinted
-// @match        https://www.vinted.pt/member/items/favourite_list*
-// @grant        none
-// @run-at       document-start
-// ==/UserScript==
-
 (function () {
     'use strict';
 

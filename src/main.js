@@ -3132,12 +3132,7 @@ existingRecord.itemClosingAction =
         existingRecord.brand =
             apiItem.brand_title ||
             existingRecord.brand ||
-            '';
-
-        existingRecord.photoUrl =
-    apiItem.photo?.url ||
-    existingRecord.photoUrl ||
-    '';
+            '';       
 
         existingRecord.photoUrl =
     apiItem.photo?.url ||
@@ -3212,9 +3207,6 @@ itemClosingAction:
 
         id:
             id,
-        photoUrl:
-    apiItem.photo?.url || '',
-
         photoUrl:
     apiItem.photo?.url || '',
 

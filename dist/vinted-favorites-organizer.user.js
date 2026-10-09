@@ -1647,7 +1647,6 @@
             existingRecord.name = apiItem.title || existingRecord.name;
             existingRecord.brand = apiItem.brand_title || existingRecord.brand || "";
             existingRecord.photoUrl = apiItem.photo?.url || existingRecord.photoUrl || "";
-            existingRecord.photoUrl = apiItem.photo?.url || existingRecord.photoUrl || "";
             existingRecord.status = apiItem.status || null;
             existingRecord.favouriteCount = apiItem.favourite_count ?? null;
             existingRecord.isFavourite = true;
@@ -1670,7 +1669,6 @@
             isClosed: apiItem.is_closed ?? null,
             itemClosingAction: apiItem.item_closing_action ?? null,
             id,
-            photoUrl: apiItem.photo?.url || "",
             photoUrl: apiItem.photo?.url || "",
             url: apiItem.url || "",
             name: apiItem.title || "",

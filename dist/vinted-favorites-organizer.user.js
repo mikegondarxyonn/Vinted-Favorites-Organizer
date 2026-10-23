@@ -111,11 +111,36 @@
     }
   });
 
+  // src/utils/formatting.js
+  function formatDashboardCurrency(value) {
+    if (!Number.isFinite(
+      value
+    )) {
+      return "\u2014";
+    }
+    return new Intl.NumberFormat(
+      "pt-PT",
+      {
+        style: "currency",
+        currency: "EUR",
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }
+    ).format(
+      value
+    );
+  }
+  var init_formatting = __esm({
+    "src/utils/formatting.js"() {
+    }
+  });
+
   // src/main.js
   var require_main = __commonJS({
     "src/main.js"() {
       init_constants();
       init_text();
+      init_formatting();
       (function() {
         "use strict";
         let vintedCsrfToken = null;
@@ -3219,24 +3244,6 @@ Os dados continuar\xE3o guardados na cache do Organizer.`
     `;
           document.body.appendChild(
             view
-          );
-        }
-        function formatDashboardCurrency(value) {
-          if (!Number.isFinite(
-            value
-          )) {
-            return "\u2014";
-          }
-          return new Intl.NumberFormat(
-            "pt-PT",
-            {
-              style: "currency",
-              currency: "EUR",
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2
-            }
-          ).format(
-            value
           );
         }
         function getDashboardStats() {

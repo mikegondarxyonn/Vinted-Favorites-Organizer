@@ -15,6 +15,10 @@ import {
     normalizeText
 } from './utils/text.js';
 
+import {
+    formatDashboardCurrency
+} from './utils/formatting.js';
+
 (function () {
     'use strict';
 
@@ -6482,40 +6486,6 @@ function createOrganizerView() {
 // VISTA DASHBOARD
 // =========================================================
 
-function formatDashboardCurrency(
-    value
-) {
-
-    if (
-        !Number.isFinite(
-            value
-        )
-    ) {
-
-        return '—';
-
-    }
-
-
-    return new Intl.NumberFormat(
-        'pt-PT',
-        {
-            style:
-                'currency',
-
-            currency:
-                'EUR',
-
-            minimumFractionDigits:
-                2,
-
-            maximumFractionDigits:
-                2
-        }
-    ).format(
-        value
-    );
-}
 
     function getDashboardStats() {
 

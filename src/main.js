@@ -3,7 +3,6 @@ import {
     UI_IDS,
     FOLDER_FILTER_ALL,
     FOLDER_FILTER_UNFILED,
-    STORAGE_KEY,
     PANEL_LAYOUT_STORAGE_KEY,
     DEFAULT_PANEL_SECTION_ORDER,
     FOLDERS_STORAGE_KEY
@@ -18,6 +17,12 @@ import {
 import {
     formatDashboardCurrency
 } from './utils/formatting.js';
+
+import {
+    listingCache,
+    persistListingCacheToStorage,
+    restoreListingCacheFromStorage
+} from './state/listingStore.js';
 
 (function () {
     'use strict';
@@ -178,7 +183,6 @@ let activeFolderMenuCleanup =
 // CACHE DE ANÚNCIOS
 // =========================================================
 
-const listingCache = new Map();
 
     // =========================================================
 // PASTAS DO ORGANIZER
@@ -2024,18 +2028,18 @@ function getUnfiledFavouriteRecords() {
 
 function saveListingCacheToStorage() {
 
+    const saved =
+        persistListingCacheToStorage();
+
+
+    if (!saved) {
+
+        return;
+
+    }
+
+
     try {
-
-        const entries =
-            Array.from(
-                listingCache.entries()
-            );
-
-
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(entries)
-        );
 
         renderPriceHistoryPanel();
 
@@ -2054,86 +2058,6 @@ function saveListingCacheToStorage() {
     }
 }
 
-
-function restoreListingCacheFromStorage() {
-
-    const savedData =
-        localStorage.getItem(
-            STORAGE_KEY
-        );
-
-
-    if (!savedData) {
-
-        console.log(
-            'Nenhuma cache guardada encontrada.'
-        );
-
-        return;
-    }
-
-
-    try {
-
-        const entries =
-            JSON.parse(savedData);
-
-
-        if (!Array.isArray(entries)) {
-            throw new Error(
-                'Formato de cache inválido.'
-            );
-        }
-
-
-        listingCache.clear();
-
-
-        entries.forEach(
-            function (entry) {
-
-                if (
-                    !Array.isArray(entry) ||
-                    entry.length !== 2
-                ) {
-                    return;
-                }
-
-
-                const id =
-                    String(entry[0]);
-
-                const record =
-                    entry[1];
-
-
-                if (!record) {
-                    return;
-                }
-
-
-                listingCache.set(
-                    id,
-                    record
-                );
-
-            }
-        );
-
-
-        console.log(
-            `Cache restaurada: ${listingCache.size} anúncios.`
-        );
-
-    } catch (error) {
-
-        console.error(
-            'Erro ao restaurar cache:',
-            error
-        );
-
-    }
-}
 
     // =========================================================
 // MAPA DE CATEGORIAS VINTED

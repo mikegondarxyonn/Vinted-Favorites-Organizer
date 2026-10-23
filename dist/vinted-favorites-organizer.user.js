@@ -135,12 +135,88 @@
     }
   });
 
+  // src/state/listingStore.js
+  function persistListingCacheToStorage() {
+    try {
+      const entries = Array.from(
+        listingCache.entries()
+      );
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(entries)
+      );
+      return true;
+    } catch (error) {
+      console.error(
+        "Erro ao guardar cache:",
+        error
+      );
+      return false;
+    }
+  }
+  function restoreListingCacheFromStorage() {
+    const savedData = localStorage.getItem(
+      STORAGE_KEY
+    );
+    if (!savedData) {
+      console.log(
+        "Nenhuma cache guardada encontrada."
+      );
+      return;
+    }
+    try {
+      const entries = JSON.parse(
+        savedData
+      );
+      if (!Array.isArray(entries)) {
+        throw new Error(
+          "Formato de cache inv\xE1lido."
+        );
+      }
+      listingCache.clear();
+      entries.forEach(
+        function(entry) {
+          if (!Array.isArray(entry) || entry.length !== 2) {
+            return;
+          }
+          const id = String(
+            entry[0]
+          );
+          const record = entry[1];
+          if (!record) {
+            return;
+          }
+          listingCache.set(
+            id,
+            record
+          );
+        }
+      );
+      console.log(
+        `Cache restaurada: ${listingCache.size} an\xFAncios.`
+      );
+    } catch (error) {
+      console.error(
+        "Erro ao restaurar cache:",
+        error
+      );
+    }
+  }
+  var listingCache;
+  var init_listingStore = __esm({
+    "src/state/listingStore.js"() {
+      init_constants();
+      listingCache = /* @__PURE__ */ new Map();
+    }
+  });
+
   // src/main.js
   var require_main = __commonJS({
     "src/main.js"() {
       init_constants();
       init_text();
       init_formatting();
+      init_listingStore();
       (function() {
         "use strict";
         let vintedCsrfToken = null;
@@ -200,7 +276,6 @@
         let currentFolderFilter = "all";
         let activeFolderMenu = null;
         let activeFolderMenuCleanup = null;
-        const listingCache = /* @__PURE__ */ new Map();
         const organizerFolders = /* @__PURE__ */ new Map();
         const folderAssignments = /* @__PURE__ */ new Map();
         function folderNameExists(name, excludedFolderId = null) {
@@ -1152,14 +1227,11 @@
           }
         }
         function saveListingCacheToStorage() {
+          const saved = persistListingCacheToStorage();
+          if (!saved) {
+            return;
+          }
           try {
-            const entries = Array.from(
-              listingCache.entries()
-            );
-            localStorage.setItem(
-              STORAGE_KEY,
-              JSON.stringify(entries)
-            );
             renderPriceHistoryPanel();
             console.log(
               `Cache guardada: ${listingCache.size} an\xFAncios.`
@@ -1167,50 +1239,6 @@
           } catch (error) {
             console.error(
               "Erro ao guardar cache:",
-              error
-            );
-          }
-        }
-        function restoreListingCacheFromStorage() {
-          const savedData = localStorage.getItem(
-            STORAGE_KEY
-          );
-          if (!savedData) {
-            console.log(
-              "Nenhuma cache guardada encontrada."
-            );
-            return;
-          }
-          try {
-            const entries = JSON.parse(savedData);
-            if (!Array.isArray(entries)) {
-              throw new Error(
-                "Formato de cache inv\xE1lido."
-              );
-            }
-            listingCache.clear();
-            entries.forEach(
-              function(entry) {
-                if (!Array.isArray(entry) || entry.length !== 2) {
-                  return;
-                }
-                const id = String(entry[0]);
-                const record = entry[1];
-                if (!record) {
-                  return;
-                }
-                listingCache.set(
-                  id,
-                  record
-                );
-              }
-            );
-            console.log(
-              `Cache restaurada: ${listingCache.size} an\xFAncios.`
-            );
-          } catch (error) {
-            console.error(
-              "Erro ao restaurar cache:",
               error
             );
           }

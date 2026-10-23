@@ -84,10 +84,38 @@
     }
   });
 
+  // src/utils/text.js
+  function normalizeFolderName(name) {
+    return String(
+      name || ""
+    ).trim().replace(
+      /\s+/g,
+      " "
+    );
+  }
+  function getNormalizedFolderName(name) {
+    return normalizeFolderName(
+      name
+    ).toLocaleLowerCase(
+      "pt-PT"
+    );
+  }
+  function normalizeText(text) {
+    return text.toLowerCase().normalize("NFD").replace(
+      /[\u0300-\u036f]/g,
+      ""
+    ).trim();
+  }
+  var init_text = __esm({
+    "src/utils/text.js"() {
+    }
+  });
+
   // src/main.js
   var require_main = __commonJS({
     "src/main.js"() {
       init_constants();
+      init_text();
       (function() {
         "use strict";
         let vintedCsrfToken = null;
@@ -150,21 +178,6 @@
         const listingCache = /* @__PURE__ */ new Map();
         const organizerFolders = /* @__PURE__ */ new Map();
         const folderAssignments = /* @__PURE__ */ new Map();
-        function normalizeFolderName(name) {
-          return String(
-            name || ""
-          ).trim().replace(
-            /\s+/g,
-            " "
-          );
-        }
-        function getNormalizedFolderName(name) {
-          return normalizeFolderName(
-            name
-          ).toLocaleLowerCase(
-            "pt-PT"
-          );
-        }
         function folderNameExists(name, excludedFolderId = null) {
           const normalizedName = getNormalizedFolderName(
             name
@@ -2138,9 +2151,6 @@ Os dados continuar\xE3o guardados na cache do Organizer.`
             return "";
           }
           return brandElement.textContent.trim();
-        }
-        function normalizeText(text) {
-          return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
         }
         function matchesPatternList(text, patterns) {
           return patterns.some(function(pattern) {

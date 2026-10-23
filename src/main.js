@@ -9,6 +9,12 @@ import {
     FOLDERS_STORAGE_KEY
 } from './constants.js';
 
+import {
+    normalizeFolderName,
+    getNormalizedFolderName,
+    normalizeText
+} from './utils/text.js';
+
 (function () {
     'use strict';
 
@@ -186,27 +192,6 @@ const folderAssignments =
 // AUXILIARES
 // =========================================================
 
-function normalizeFolderName(name) {
-
-    return String(
-        name || ''
-    )
-        .trim()
-        .replace(
-            /\s+/g,
-            ' '
-        );
-}
-
-
-function getNormalizedFolderName(name) {
-
-    return normalizeFolderName(
-        name
-    ).toLocaleLowerCase(
-        'pt-PT'
-    );
-}
 
 
 function folderNameExists(
@@ -4210,13 +4195,6 @@ window.showVintedListingCache =
     }
 
 
-    function normalizeText(text) {
-        return text
-            .toLowerCase()
-            .normalize('NFD')
-            .replace(/[\u0300-\u036f]/g, '')
-            .trim();
-    }
 
 
     // =========================================================
